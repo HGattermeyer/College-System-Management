@@ -143,10 +143,17 @@ namespace CollegeSystemSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var teacher = await _context.Teacher.FindAsync(id);
-            _context.Teacher.Remove(teacher);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                var teacher = await _context.Teacher.FindAsync(id);
+                _context.Teacher.Remove(teacher);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception)
+            {
+                return RedirectToAction(nameof(Error), new { message = "There are some subjects to the selected teacher. Please, delete or assign the subject to another teacher before delete them." });
+            }
         }
 
         public IActionResult Error(string message)

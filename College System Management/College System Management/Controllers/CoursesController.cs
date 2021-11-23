@@ -172,7 +172,7 @@ namespace College_System_Management.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            catch (DbUpdateException e)
+            catch (Exception)
             {
                 return RedirectToAction(nameof(Error), new { message = "There are some subjets and students binded to this course. Delete them first" });
             }

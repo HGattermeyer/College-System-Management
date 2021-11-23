@@ -29,7 +29,7 @@ namespace College_System_Management
             services.AddControllersWithViews();
 
             services.AddDbContext<College_System_ManagementContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("College_System_ManagementContext")));
+                    options.UseSqlServer("Server=localhost;Database=CollegeSystemDbContext;Trusted_Connection=True;MultipleActiveResultSets=true"));
 
             // Add services to container
             services.AddScoped<CourseService>();

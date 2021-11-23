@@ -185,7 +185,7 @@ namespace CollegeSystemSystem.Controllers
             }
             catch (DbUpdateException e)
             {
-                return RedirectToAction(nameof(Error), new { message = "There are some subjets and students binded to this course. Delete them first" });
+                return RedirectToAction(nameof(Error), new { message = "There are some student or/and teachers binded to this course. Delete or assign them to another subject." });
             }
         }
         public IActionResult Error(string message)

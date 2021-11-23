@@ -31,7 +31,7 @@ namespace College_System_Management.Data
             modelBuilder.Entity<Course>().HasMany<Student>(s => s.Students).WithOne(c => c.Course).OnDelete(DeleteBehavior.ClientNoAction);
             modelBuilder.Entity<Course>().HasMany<Subject>(s => s.Subjects).WithOne(c => c.Course).OnDelete(DeleteBehavior.ClientNoAction);
             modelBuilder.Entity<Teacher>().HasMany<Subject>(s => s.Subjects).WithOne(t => t.Teacher).OnDelete(DeleteBehavior.ClientNoAction);
-            modelBuilder.Entity<Student>().HasMany<Grade>(s => s.Grades).WithOne(g => g.Student).OnDelete(DeleteBehavior.ClientNoAction);
+            modelBuilder.Entity<Student>().HasMany<Grade>(s => s.Grades).WithOne(g => g.Student).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Subject>().HasMany<Grade>(s => s.Grades).WithOne(g => g.Subject).OnDelete(DeleteBehavior.ClientNoAction);
 
             modelBuilder.Entity<Course>().HasData(

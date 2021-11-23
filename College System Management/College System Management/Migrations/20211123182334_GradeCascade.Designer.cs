@@ -4,14 +4,16 @@ using College_System_Management.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace College_System_Management.Migrations
 {
     [DbContext(typeof(College_System_ManagementContext))]
-    partial class College_System_ManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20211123182334_GradeCascade")]
+    partial class GradeCascade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
