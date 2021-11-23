@@ -1,15 +1,15 @@
 ﻿@model IEnumerable<College_System_Management.Models.Subject>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Subjects";
 }
 
-<h1>Index</h1>
+<h1>Subjects</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-default">Create New</a>
 </p>
-<table class="table">
+<table class="table table-hover">
     <thead>
         <tr>
             <th>
@@ -19,29 +19,46 @@
                 @Html.DisplayNameFor(model => model.Course)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Teacher)
+                @Html.DisplayNameFor(model => model.Teacher.Name)
+            </th>
+            <th>
+                Average Grade
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.SubjectName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Course.CourseName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Teacher.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>        
+                    <a asp-action="Details" asp-route-id="@item.Id" >@Html.DisplayFor(modelItem => item.SubjectName)</a>                    
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Course.CourseName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Teacher.Name)
+                </td>
+                <td>
+                    @{
+                        var sum = item.Grades.Sum(g => g.GradeNumber);
+                        var count = item.Grades.Count();
+                        var avg = sum / count;
+                        if (count == 0)
+                        {
+                            avg = 0;
+                        }
+                        avg = Math.Round((float)avg, 2);
+                    }
+                    @avg
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" >Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id" >Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" >Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

@@ -1,36 +1,70 @@
 ﻿@model College_System_Management.Models.Subject
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Subject Details";
 }
 
-<h1>Details</h1>
+<h1>Subject Details</h1>
 
-<div>
-    <h4>Subject</h4>
+<div>    
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.SubjectName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.SubjectName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Course)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Course.CourseName)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Teacher)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Teacher.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Teacher.Name)
         </dd>
     </dl>
+    @*Lista de alunos e suas notas*@
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>
+                    Student Name
+                </th>
+                <th>
+                    Grade
+                </th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (Grade grade in Model.Grades)
+            {
+                <tr>
+
+                    <td>
+                        @grade.Student.Name
+                    </td>
+                    <td>
+                        @grade.GradeNumber
+                    </td>
+
+                </tr>
+
+            }
+        </tbody>
+    </table>
+
+
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-default">Edit</a> |
+    <a asp-action="Index" class="btn btn-default">Back to List</a>
 </div>
