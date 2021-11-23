@@ -7,22 +7,46 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using College_System_Management.Data;
 using College_System_Management.Models;
+using College_System_Management.Services;
+using System.Diagnostics;
 
 namespace College_System_Management.Controllers
 {
     public class CoursesController : Controller
     {
         private readonly College_System_ManagementContext _context;
+        private readonly CourseService _courseService;
+        private readonly StudentService _studentService;
+        private readonly SubjectService _subjectService;
+        private readonly GradeService _gradeService;
 
-        public CoursesController(College_System_ManagementContext context)
+        public CoursesController(College_System_ManagementContext context, CourseService courseService, StudentService studentService, SubjectService subjectService, GradeService gradeService)
         {
             _context = context;
+            _courseService = courseService;
+            _studentService = studentService;
+            _subjectService = subjectService;
+            _gradeService = gradeService;
         }
 
         // GET: Courses
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Course.ToListAsync());
+            List<Course> courses = await _courseService.FindAllAsync();
+
+            List<int> studentNumber = new List<int>();
+
+            foreach (Course course in courses)
+            {
+                course.Students = await _studentService.FindAllByCourseIdAsync(course.Id);
+                course.Subjects = await _subjectService.FindAllByCourseIdAsync(course.Id);
+
+                studentNumber.Add(course.Students.Count());
+            }
+
+            ViewBag.StudentNumber = studentNumber;
+            // Number of teacher, students, and average of their grades
+            return View(courses);
         }
 
         // GET: Courses/Details/5
@@ -34,6 +58,8 @@ namespace College_System_Management.Controllers
             }
 
             var course = await _context.Course
+                .Include(s => s.Students)
+                .Include(s => s.Subjects)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (course == null)
             {
@@ -140,14 +166,33 @@ namespace College_System_Management.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var course = await _context.Course.FindAsync(id);
-            _context.Course.Remove(course);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                _context.Course.Remove(course);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException e)
+            {
+                return RedirectToAction(nameof(Error), new { message = "There are some subjets and students binded to this course. Delete them first" });
+            }
         }
 
         private bool CourseExists(int id)
         {
             return _context.Course.Any(e => e.Id == id);
+        }
+
+        public IActionResult Error(string message)
+        {
+            var viewModel = new ErrorViewModel
+            {
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+
+            };
+
+            return View(viewModel);
         }
     }
 }

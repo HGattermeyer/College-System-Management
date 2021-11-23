@@ -12,7 +12,7 @@ namespace College_System_Management.Data
         public College_System_ManagementContext(DbContextOptions<College_System_ManagementContext> options)
             : base(options)
         {
-            //this.Database.EnsureCreated();
+            this.Database.EnsureCreated();
         }
 
         private readonly College_System_ManagementContext _context;
