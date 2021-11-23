@@ -1,4 +1,6 @@
-﻿namespace College_System_Management.Models.ViewModels
+﻿using System.Collections.Generic;
+
+namespace College_System_Management.Models.ViewModels
 {
     public class StudentFormViewModel
     {
