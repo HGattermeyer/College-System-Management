@@ -4,33 +4,77 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Student Details</h1>
 
 <div>
-    <h4>Student</h4>
+    
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.BirthDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.BirthDate)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Course)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Course.CourseName)
+        </dt>
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Course.CourseName)
         </dd>
     </dl>
 </div>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                Subjects Name
+            </th>
+            <th>
+                Grade
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (Grade grade in Model.Grades)
+        {
+            <tr>
+
+                <td>
+                    @grade.Subject.SubjectName
+                </td>
+
+                <td>
+                    @{
+                        if (@grade.GradeNumber == null)
+                        {
+                            @Html.ActionLink("Add","Edit","Grades", new{id = @grade.Id})
+                        }
+                        else
+                        {
+                            @Html.ActionLink(@grade.GradeNumber.ToString(),"Edit","Grades", new{id = @grade.Id})
+                        }
+                    }
+
+                </td>
+
+            </tr>
+
+        }
+    </tbody>
+</table>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-default">Edit</a> 
+    <a asp-action="Index" class="btn btn-default">Back to List</a>
 </div>
