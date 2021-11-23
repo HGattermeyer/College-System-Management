@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using College_System_Management.Data;
+using College_System_Management.Services;
 
 namespace College_System_Management
 {
@@ -29,6 +30,14 @@ namespace College_System_Management
 
             services.AddDbContext<College_System_ManagementContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("College_System_ManagementContext")));
+
+            // Add services to container
+            services.AddScoped<CourseService>();
+            services.AddScoped<StudentService>();
+            services.AddScoped<SubjectService>();
+            services.AddScoped<TeacherService>();
+            services.AddScoped<GradeService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

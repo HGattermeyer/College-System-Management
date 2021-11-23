@@ -1,35 +1,69 @@
 ﻿@model IEnumerable<College_System_Management.Models.Course>
 
+    
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Course</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-default" asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table table-hover">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.CourseName)
             </th>
+            <th>
+                Subjects Numbers
+            </th>
+            <th>
+                Number of Students
+            </th>
+            <th>
+                Grade Average
+            </th>
+
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CourseName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CourseName)
+                </td>
+                <td>
+                    @item.Subjects.Count()
+                </td>
+                <td>
+                    @item.Students.Count()
+
+                </td>
+                <td>
+                    @{
+                        var sum = item.Students.Sum(x => x.Grades.Sum(y => y.GradeNumber));
+                        var count = item.Students.Count();
+                        var avg = sum / count;
+                        if (count == 0)
+                        {
+                            avg = 0;
+                        }
+                        avg = Math.Round((float)avg, 2);
+                    }
+                    @avg
+
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
